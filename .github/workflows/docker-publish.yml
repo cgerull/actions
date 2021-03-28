@@ -46,9 +46,9 @@ jobs:
 
           echo TAG $VER
           echo "TAG=$VER" >> $GITHUB_ENV
-          IMAGE=env.IMAGE_NAME
+          IMAGE=${{ env.IMAGE_NAME }}
           echo IMAGE $IMAGE 
-          IMAGE=$IMAGE:$Tag
+          IMAGE="$IMAGE:$Tag"
           echo modified image $IMAGE
           echo "IMAGE=$IMAGE" >> $GITHUB_ENV
           echo GITHUB_ENV $GITHUB_ENV
