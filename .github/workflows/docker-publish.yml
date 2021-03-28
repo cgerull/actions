@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # TODO: Change variable to your image's name.
-      IMAGE_NAME: "cgerull/testserver"
+      IMAGE_NAME: "cgerull/busybox"
       TAG: "latest"
     steps:
       - name: Checkout
@@ -46,6 +46,7 @@ jobs:
 
           echo TAG $VER
           echo "TAG=$VER" >> $GITHUB_ENV
+          echo IMAGE=env.IMAGE_NAME:$VER >> $GITHUB_ENV
           echo GITHUB_ENV $GITHUB_ENV
       - name: Print image name env
         run: |
@@ -63,4 +64,4 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
-          tags: ${{ IMAGE }}
+          tags: ${{ env.IMAGE }}
