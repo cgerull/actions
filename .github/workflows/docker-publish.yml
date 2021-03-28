@@ -4,7 +4,7 @@ on:
   push:
     # Publish `master` as Docker `latest` image.
     branches:
-      - '**'
+      - 'master'
     # Publish `v1.2.3` tags as releases.
     tags:
       - v*
@@ -48,7 +48,7 @@ jobs:
           echo "TAG=$VER" >> $GITHUB_ENV
           IMAGE=${{ env.IMAGE_NAME }}
           echo IMAGE $IMAGE 
-          IMAGE="$IMAGE:$Tag"
+          IMAGE="$IMAGE:$VER"
           echo modified image $IMAGE
           echo "IMAGE=$IMAGE" >> $GITHUB_ENV
           echo GITHUB_ENV $GITHUB_ENV
@@ -63,8 +63,6 @@ jobs:
           echo secrets.MY_SECRET ${{ secrets.MY_SECRET }}
       - name: Build and push
         uses: docker/build-push-action@v2
-        env:
-          IMAGE: env.IMAGE_NAME:env.Tag
         with:
           context: .
           platforms: linux/amd64,linux/arm64,linux/arm/v7
