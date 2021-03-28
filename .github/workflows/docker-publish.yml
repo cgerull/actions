@@ -55,7 +55,7 @@ jobs:
         run: |
           echo secrets.DOCKERHUB_USERNAME ${{ secrets.DOCKERHUB_USERNAME }}
           echo env.secrets.DOCKERHUB_USERNAME env.${{ secrets.DOCKERHUB_USERNAME }}
-          echo secrets.MY_SECRET ${{ MY_SECRET }}
+          echo secrets.MY_SECRET ${{ secrets.MY_SECRET }}
       # - name: Build and push
       #   uses: docker/build-push-action@v2
       #   env:
