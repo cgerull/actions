@@ -54,9 +54,9 @@ jobs:
           echo GITHUB_ENV $GITHUB_ENV
       - name: Print image name env
         run: |
-          echo "Image_NAME: env.IMAGE_NAME"
-          echo "Tag: env.TAG"
-          echo "IMAGE: env.IMAGE"
+          echo "Image_NAME: ${{ env.IMAGE_NAME }}"
+          echo "Tag: ${{ env.TAG }}"
+          echo "IMAGE: ${{ env.IMAGE }}"
       - name: Show global vars
         run: |
           echo secrets.DOCKERHUB_USERNAME ${{ secrets.DOCKERHUB_USERNAME }}
