@@ -45,7 +45,7 @@ jobs:
           [[ $VER =~ [0-9].* ]] && echo "TAG=$VER" >> $GITHUB_ENV
 
           echo TAG $VER
-          echo "TAG=SVER" >> $GITHUB_ENV
+          echo "TAG=$VER" >> $GITHUB_ENV
           echo GITHUB_ENV $GITHUB_ENV
       - name: Print image name env
         run: |
@@ -54,7 +54,6 @@ jobs:
       - name: Show global vars
         run: |
           echo secrets.DOCKERHUB_USERNAME ${{ secrets.DOCKERHUB_USERNAME }}
-          echo env.secrets.DOCKERHUB_USERNAME env.${{ secrets.DOCKERHUB_USERNAME }}
           echo secrets.MY_SECRET ${{ secrets.MY_SECRET }}
       # - name: Build and push
       #   uses: docker/build-push-action@v2
