@@ -15,9 +15,7 @@ on:
 
 jobs:
   push:
-    needs: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
     env:
       # TODO: Change variable to your image's name.
       IMAGE_NAME: "cgerull/testserver"
