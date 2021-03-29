@@ -1,4 +1,4 @@
-name: Test workflow
+name: Test versions
 
 on:
   push:
@@ -12,28 +12,6 @@ jobs:
       TAG: "latest"
     steps:
       - name: Set image name and version
-        run: |
-          echo "ref ${{ github.ref }}"
-          # Strip git ref prefix from version
-          VER=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          echo "ref ${{ github.ref }}"
-          # Strip "v" prefix from tag name
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VER=$(echo $VER | sed -e 's/^v//')
-          echo "second VER $VER"
-          # Use Docker `latest` tag convention
-          [[ $VER =~ [0-9].* ]] && echo "TAG=$VER" >> $GITHUB_ENV
-
-          echo TAG $VER
-          echo "TAG=$VER" >> $GITHUB_ENV
-
-          IMAGE=${{ env.IMAGE_NAME }}
-          echo IMAGE $IMAGE 
-          IMAGE="$IMAGE:$VER"
-          echo modified image $IMAGE
-
-          echo "IMAGE=$IMAGE" >> $GITHUB_ENV
-          echo GITHUB_ENV $GITHUB_ENV
-            - name: Set image name and version
         run: |
           # Strip git ref prefix from version
           echo "ref ${{ github.ref }}"
