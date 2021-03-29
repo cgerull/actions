@@ -33,7 +33,7 @@ jobs:
 
           echo "IMAGE=$IMAGE" >> $GITHUB_ENV
           echo GITHUB_ENV $GITHUB_ENV
-            - name: Set image name and version
+      - name: Set image name and version
         run: |
           # Strip git ref prefix from version
           echo "ref ${{ github.ref }}"
