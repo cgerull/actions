@@ -29,8 +29,12 @@ jobs:
           
           IMAGE="${{ env.IMAGE_NAME }}:${{ env.TAG }}"
           echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+          NEWIMAGE="${{ env.IMAGE_NAME }}:$VER"
+          echo "NEWIMAGE=$NEWIMAGE" >> $GITHUB_ENV
       - name: Print image name env
         run: |
           echo "Image_NAME: ${{ env.IMAGE_NAME }}"
           echo "Tag: ${{ env.TAG }}"
+          echo NEWTAG ${{ env.NEWTAG }}
           echo "IMAGE: ${{ env.IMAGE }}"
+          echo "NEWIMAGE: ${{ env.NEWIMAGE }}"
