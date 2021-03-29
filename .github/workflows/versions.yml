@@ -2,16 +2,6 @@ name: Test workflow
 
 on:
   push:
-    # Publish `master` as Docker `latest` image.
-    branches:
-      - 'master'
-    # Publish `v1.2.3` tags as releases.
-    tags:
-      - v*
-  # Run tests for any PRs.
-  pull_request:
-  # Run manually
-  workflow_dispatch:
 
 jobs:
   push:
@@ -21,23 +11,12 @@ jobs:
       IMAGE_NAME: "cgerull/busybox"
       TAG: "latest"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-      - name: Login to DockerHub
-        uses: docker/login-action@v1 
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Set image name and version
         run: |
           echo "ref ${{ github.ref }}"
           # Strip git ref prefix from version
           VER=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          echo "first VER $VER"
+          echo "ref ${{ github.ref }}"
           # Strip "v" prefix from tag name
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VER=$(echo $VER | sed -e 's/^v//')
           echo "second VER $VER"
@@ -46,25 +25,34 @@ jobs:
 
           echo TAG $VER
           echo "TAG=$VER" >> $GITHUB_ENV
+
           IMAGE=${{ env.IMAGE_NAME }}
           echo IMAGE $IMAGE 
           IMAGE="$IMAGE:$VER"
           echo modified image $IMAGE
+
           echo "IMAGE=$IMAGE" >> $GITHUB_ENV
           echo GITHUB_ENV $GITHUB_ENV
+            - name: Set image name and version
+        run: |
+          # Strip git ref prefix from version
+          echo "ref ${{ github.ref }}"
+          VER=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          echo "Get ref ${{ github.ref }}"
+          # Strip "v" prefix from tag name
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VER=$(echo $VER | sed -e 's/^v//')
+          echo "Strip leading v $VER"
+          # Use Docker `latest` tag convention
+          [[ $VER =~ [0-9].* ]] && echo "TAG=$VER" >> $GITHUB_ENV
+          [[ $VER =~ [0-9].* ]] && echo "NEWTAG=$VER" >> $GITHUB_ENV
+          echo VER $VER
+          echo TAG ${{ env.TAG }}
+          echo NEWTAG ${{ env.NEWTAG }}
+          
+          IMAGE="${{ env.IMAGE_NAME }}:${{ env.TAG }}"
+          echo "IMAGE=$IMAGE" >> $GITHUB_ENV
       - name: Print image name env
         run: |
           echo "Image_NAME: ${{ env.IMAGE_NAME }}"
           echo "Tag: ${{ env.TAG }}"
           echo "IMAGE: ${{ env.IMAGE }}"
-      - name: Show global vars
-        run: |
-          echo secrets.DOCKERHUB_USERNAME ${{ secrets.DOCKERHUB_USERNAME }}
-          echo secrets.MY_SECRET ${{ secrets.MY_SECRET }}
-      - name: Build and push
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
-          push: true
-          tags: ${{ env.IMAGE }}
