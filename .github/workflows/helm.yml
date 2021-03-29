@@ -11,6 +11,6 @@ jobs:
       IMAGE_NAME: "cgerull/busybox"
       TAG: "latest"
     steps:
-      - name:
+      - name: The first step
         run: |
           echo "Do some templating"
